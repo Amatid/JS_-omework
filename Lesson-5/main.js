@@ -52,7 +52,7 @@ function treeSum(arr) {
 
     for (var i = 0; i < arr.length; i++) {
         var item = arr[i];
-        if (typeof item === "object" && item != null && item.length != null) {
+        if (typeof item === "object" && item != null && item.length) {
             sum += treeSum(item);
             continue;
         }
