@@ -209,6 +209,7 @@ header>div>ul>li:first-child>span{
 }
 .main{
     grid-area: main;
+    min-width: 500px;
 }
 .main>h1{
     font: 30px Georgia;
@@ -325,6 +326,7 @@ header>div>ul>li:first-child>span{
     display: flex;
     align-items: center;
     background-color: #f2f4f8;
+    min-width: 500px;
 }
 .footer img{
     padding: 14px 22px;
