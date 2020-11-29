@@ -50,6 +50,7 @@ function isAnagramm(word, letters) {
 function divideArr(arr, quantityElements) {
     var part = Math.ceil(arr.length/quantityElements);
     var newArr = [];
+    
     while (newArr.length < quantityElements) {
         var partsOfArr = arr.splice(0, part);
         newArr.push(partsOfArr);
