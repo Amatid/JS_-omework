@@ -59,10 +59,14 @@ barsik = null;
 function deepClone(initialObj) {
     if (typeof initialObj !== 'object') {
         var clonedObj = initialObj;
-    } else {
+    } 
+    if (typeof initialObj === 'object' && !Array.isArray(initialObj)) {
         clonedObj = {};
     }
-
+    if (typeof initialObj === 'object' && Array.isArray(initialObj)) {
+        clonedObj = [];
+    } 
+    
     for (var k in initialObj) {
         var original = initialObj[k];
         if (original == null) {
