@@ -57,16 +57,16 @@ barsik = null;
 
 //Задание 2
 function deepClone(initialObj) {
-    if (typeof initialObj !== 'object') {
-        var clonedObj = initialObj;
-    } 
-    if (typeof initialObj === 'object' && !Array.isArray(initialObj)) {
+    var clonedObj;
+
+    if (typeof initialObj !== 'object' || initialObj === null) {
+        clonedObj = initialObj;
+    } else if (Array.isArray(initialObj)) {
+        clonedObj = [];
+    } else {
         clonedObj = {};
     }
-    if (typeof initialObj === 'object' && Array.isArray(initialObj)) {
-        clonedObj = [];
-    } 
-    
+
     for (var k in initialObj) {
         var original = initialObj[k];
         if (original == null) {
@@ -111,7 +111,7 @@ var initialObj = {
         },
         object3: {}
     },
-    method: function() {
+    method: function () {
         alert('Hello');
     }
 };
@@ -176,4 +176,4 @@ function compareObj(obj1, obj2) {
     return true;
 }
 
-compareObj (initialObj, clonedObj);
+compareObj(initialObj, clonedObj);
