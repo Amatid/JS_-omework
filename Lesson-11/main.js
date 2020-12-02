@@ -1,19 +1,15 @@
 //Задание 1
 function filterNumbersArr(numbers) {
-    var newArr = numbers.filter(function (numbers) {
-        return numbers > 0;
-    })
-
-    return newArr;
+    return numbers.filter(function (number) {
+        return number > 0;
+    })   
 }
 
 //Задание 2
 function findFirstPositive(numbers) {
-    var firstPositive = numbers.find(function (numbers) {
-        return numbers > 0;
+    return numbers.find(function (number) {
+        return number > 0;
     })
-
-    return firstPositive;
 }
 
 //Задание 3
@@ -33,16 +29,11 @@ function isPalindrome(word) {
 
 //Задание 4
 function isAnagramm(word, letters) {
-    word = word.toLowerCase();
-    letters = letters.toLowerCase();
-    if (word.length !== letters.length) {
+    word = word.toLowerCase().split('').sort().join();
+    letters = letters.toLowerCase().split('').sort().join();
+    if (word !== letters) {
         return false;
-    }
-    for (var i = 0; i < word.length; i++) {
-        if (word.indexOf(letters[i], i) === -1) {
-            return false;
-        }
-    }
+    }  
     return true;
 }
 
