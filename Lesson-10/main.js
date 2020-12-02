@@ -1,14 +1,14 @@
 //Задание 1
-function Cat(name) {
+function Animal(name) {
     this._foodAmount = 50;
     this.name = name;
 }
 
-Cat.prototype._formatFoodAmount = function () {
+Animal.prototype._formatFoodAmount = function () {
     return this._foodAmount + ' гр.';
 }
 
-Cat.prototype.dailyNorm = function (amount) {
+Animal.prototype.dailyNorm = function (amount) {
     if (!arguments.length) return this._formatFoodAmount();
 
     if (amount < 50 || amount > 500) {
@@ -18,16 +18,27 @@ Cat.prototype.dailyNorm = function (amount) {
     this._foodAmount = amount;
 };
 
-Cat.prototype.feed = function () {
+Animal.prototype.feed = function () {
     console.log('Насыпаем в миску ' + this.dailyNorm() + ' корма.');
+
+};
+
+function Cat(name) {
+    this._foodAmount = 50;
+    this.name = name;
+}
+
+Cat.prototype = Object.create(Animal.prototype);
+Cat.prototype.constructor = Animal;
+
+Cat.prototype.feed = function () {
+    Animal.prototype.feed.apply(this, arguments);
     console.log('Кот доволен ^_^');
+}
 
 Cat.prototype.stroke = function () {
     console.log('Гладим кота');
 }
-
-};
-
 
 var barsik = new Cat('Барсик');
 
@@ -46,7 +57,11 @@ barsik = null;
 
 //Задание 2
 function deepClone(initialObj) {
-    var clonedObj = {};
+    if (typeof initialObj !== 'object') {
+        var clonedObj = initialObj;
+    } else {
+        clonedObj = {};
+    }
 
     for (var k in initialObj) {
         var original = initialObj[k];
@@ -64,7 +79,7 @@ function deepClone(initialObj) {
             case 'object':
                 if (Array.isArray(original)) {
                     clonedObj[k] = [];
-                    for (var j = 0; j < this.length; j++) {
+                    for (var j = 0; j < original.length; j++) {
                         var clonedElement = deepClone(original[j]);
 
                         clonedObj[k].push(clonedElement);
@@ -78,6 +93,32 @@ function deepClone(initialObj) {
     return clonedObj;
 }
 
+var initialObj = {
+    string: 'Vasya',
+    number: 30,
+    boolean: true,
+    undefined: undefined,
+    null: null,
+    array: [1, 2, 3],
+    object: {
+        string2: 'Petrov',
+        object2: {
+            array2: [{}, {}]
+        },
+        object3: {}
+    },
+    method: function() {
+        alert('Hello');
+    }
+};
+var clonedObj = deepClone(initialObj);
+
+clonedObj.object.object2.array2[1].name = 'Vasya';
+clonedObj.array.push(2);
+
+console.log(initialObj);
+console.log(clonedObj);
+
 //Задание 3
 function compareObj(obj1, obj2) {
     if (typeof obj1 !== typeof obj2) {
@@ -88,7 +129,7 @@ function compareObj(obj1, obj2) {
     }
     if (obj1 === null || obj2 === null) {
         return obj1 === obj2;
-    }    
+    }
     if (typeof obj1 === 'function') {
         return obj1.toString() === obj2.toString();
     }
@@ -130,3 +171,5 @@ function compareObj(obj1, obj2) {
     }
     return true;
 }
+
+compareObj (initialObj, clonedObj);
