@@ -5,12 +5,16 @@ function filterNumbersArr(numbers) {
     })   
 }
 
+filterNumbersArr([1, 2, 3, -6, 9, -4, -10]);
+
 //Задание 2
 function findFirstPositive(numbers) {
     return numbers.find(function (number) {
         return number > 0;
     })
 }
+
+findFirstPositive([-1, -2, 3, -6, 9, -4, -10]);
 
 //Задание 3
 function isPalindrome(word) {
@@ -27,6 +31,9 @@ function isPalindrome(word) {
     }
 }
 
+isPalindrome ('нагаН');
+isPalindrome ('бок');
+
 //Задание 4
 function isAnagramm(word, letters) {
     word = word.toLowerCase().split('').sort().join();
@@ -36,6 +43,9 @@ function isAnagramm(word, letters) {
     }  
     return true;
 }
+
+isAnagramm (бок, оок);
+isAnagramm (бок, обк);
 
 //Задание 5
 function divideArr(arr, quantityElements) {
@@ -48,3 +58,6 @@ function divideArr(arr, quantityElements) {
     }
     return newArr;
 }
+
+divideArr([1, 2, 3, 4], 2);
+divideArr([1, 2, 3, 4, 5, 6, 7, 8], 3);
