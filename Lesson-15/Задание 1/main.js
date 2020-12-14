@@ -21,23 +21,15 @@ inputY.addEventListener('keyup', function (event) {
 })
 
 button.addEventListener('click', function (event) {
-    checkValueX();
-    checkValueY();
+    checkValue(inputX);
+    checkValue(inputY);
     createTable();
 })
 
-function checkValueX() {
-    if (isNaN(+inputX.value) || +inputX.value < 1 || +inputX.value > 10) {
-        alert('Введите корректное значение в поле "X" от 1 до 10');
-        inputX.value = '';
-        isValidate();
-    }
-}
-
-function checkValueY() {
-    if (isNaN(+inputY.value) || +inputY.value < 1 || +inputY.value > 10) {
-        alert('Введите корректное значение в поле "Y" от 1 до 10');
-        inputY.value = '';
+function checkValue(stringOfValue) {
+    if (isNaN(+stringOfValue.value) || +stringOfValue.value < 1 || +stringOfValue.value > 10) {
+        alert('Введите корректное значение в поля "X" и "Y" от 1 до 10');
+        stringOfValue.value = '';
         isValidate();
     }
 }
