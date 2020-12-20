@@ -1,0 +1,58 @@
+body {
+    background-color: black;
+}
+p {
+    display: inline-block;
+}
+#getInformation {
+    background-color: rgb(79, 202, 120);
+    width: 105px;
+    position: absolute;
+    left: 700px;
+    bottom: 15px;
+}
+#usersTabs {
+    height: 50px;
+    display: flex;
+    width: 50%;
+    margin: auto;
+    position: relative;
+}
+.tab {
+    height: 50px;
+    width: 100px;
+    background-color: rgb(17, 216, 33);
+    margin-right: 10px;
+    text-align: center;
+    border-radius: 15px 15px 0 0;
+}
+.tabActive {
+    height: 50px;
+    width: 100px;
+    background-color: white;
+    margin-right: 10px;
+    text-align: center;
+    border-radius: 15px 15px 0 0;
+}
+#usersInformation{
+    display: flex;
+    background-color: white;
+    width: 50%;
+    margin: auto;
+    border-radius: 0 15px 15px 15px;
+}
+img {
+    width: 128px;
+    height: 128px;
+    margin: 50px 50px 50px 50px;
+}
+#usersInformation p {
+    align-self: center;
+    font-family: cursive;
+}
+#usersTabs p:first-child {
+    margin-right: 3px;
+}
+#usersTabs p{
+    cursor: default;
+}
