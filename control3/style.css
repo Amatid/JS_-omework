@@ -10,3 +10,6 @@ input {
 .redBorder{
     border: solid 1px red;
 }
+.red{
+    color: red;
+}
