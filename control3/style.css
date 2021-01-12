@@ -7,3 +7,6 @@ input {
 #register{
     margin-top: 5px;
 }
+.redBorder{
+    border: solid 1px red;
+}
