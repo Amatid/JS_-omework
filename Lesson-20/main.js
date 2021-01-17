@@ -8,23 +8,33 @@ var numberSecond = document.getElementById('seconds');
 var numberMinute = document.getElementById('minutes');
 var buttons = document.getElementsByTagName('button');
 var numberResult = 0;
+var arrOfResults = [];
+var statusLoad = localStorage.getItem('status');
+var minuteLoad = localStorage.getItem('minute');
+var secondLoad = localStorage.getItem('second');
+var milisecondLoad = localStorage.getItem('milisecond');
+var resultsLoad = JSON.parse(localStorage.getItem('results'));
+
+function formatNumber () {
+    var clock = document.getElementsByTagName('div');
+    for (var i = 1; i < clock.length; i++) {
+        if (clock[i].innerHTML <= 9) {
+            clock[i].innerHTML = '0' + clock[i].innerHTML;
+        }
+    }
+}
 
 function startTimer() {
-    var clock = document.getElementsByTagName('div');
     var timer = setInterval(function () {
         milisecond++;
         if (action.dataset.status === 'start') {
             clearInterval(timer);
-            milisecond = 0 
+            milisecond = 0
         }
         numberMilisecond.innerHTML = milisecond;
         numberSecond.innerHTML = second;
         numberMinute.innerHTML = minute;
-        for (var i = 1; i < clock.length; i++) {
-            if (clock[i].innerHTML <= 9) {
-                clock[i].innerHTML = '0' + clock[i].innerHTML;
-            }
-        }
+        formatNumber();
         if (milisecond === 99) {
             second++;
             milisecond = 0;
@@ -43,6 +53,9 @@ function startTimer() {
 }
 
 function createButtons() {
+    if (buttons.length > 1) {
+        return;
+    }
     for (var i = 0; i <= 1; i++) {
         var createdButtons = document.createElement('button');
         body.appendChild(createdButtons);
@@ -76,7 +89,28 @@ function saveResult() {
     var result = document.createElement('p');
     body.appendChild(result);
     numberResult++;
-    result.innerHTML = numberResult + ') ' + numberMinute.innerHTML + ' : ' + numberSecond.innerHTML + ' : ' + numberMilisecond.innerHTML;    
+    result.innerHTML = numberResult + ') ' + numberMinute.innerHTML + ' : ' + numberSecond.innerHTML + ' : ' + numberMilisecond.innerHTML;
+    arrOfResults.push(result.innerHTML);
+}
+
+function setNumberAfterLoad() {
+    action.dataset.status = statusLoad;
+    numberMilisecond.innerHTML = milisecondLoad;
+    numberSecond.innerHTML = secondLoad;
+    numberMinute.innerHTML = minuteLoad;
+    minute = minuteLoad;
+    second = secondLoad;
+    milisecond = milisecondLoad;
+    formatNumber();
+    createButtons();
+    if (resultsLoad.length > 0) {
+        for (var i = 0; i < resultsLoad.length; i++) {
+            var resultAfterLoad = document.createElement('p');
+            body.appendChild(resultAfterLoad);
+            resultAfterLoad.innerHTML = resultsLoad[i];
+        }
+        localStorage.setItem('results', JSON.stringify(resultsLoad));
+    }
 }
 
 action.addEventListener('click', function (event) {
@@ -107,8 +141,48 @@ action.addEventListener('click', function (event) {
     }
 })
 
+window.addEventListener('unload', function (event) {
+    localStorage.setItem('status', action.dataset.status);
+    localStorage.setItem('minute', minute);
+    localStorage.setItem('second', second);
+    localStorage.setItem('milisecond', milisecond);
+    localStorage.setItem('results', JSON.stringify(arrOfResults));
+})
 
-
-
-
-
+window.addEventListener('load', function (event) {
+    switch (statusLoad) {
+        case 'start':
+            return;
+        case 'stop':
+            action.innerHTML = 'Run';
+            setNumberAfterLoad();
+            var buttons = document.getElementsByTagName('button');
+            var reset = buttons[1];
+            var save = buttons[2];
+            reset.addEventListener('click', function (event) {
+                event.stopImmediatePropagation();
+                resetTimer();
+            })
+            save.addEventListener('click', function (event) {
+                event.stopImmediatePropagation();
+                saveResult();
+            })
+            break;
+        case 'process':
+            action.innerHTML = 'Stop';
+            setNumberAfterLoad();
+            startTimer();
+            var buttons = document.getElementsByTagName('button');
+            var reset = buttons[1];
+            var save = buttons[2];
+            reset.addEventListener('click', function (event) {
+                event.stopImmediatePropagation();
+                resetTimer();
+            })
+            save.addEventListener('click', function (event) {
+                event.stopImmediatePropagation();
+                saveResult();
+            })
+            break;
+    }
+})
