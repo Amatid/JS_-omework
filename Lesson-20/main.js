@@ -7,17 +7,16 @@ var numberMilisecond = document.getElementById('miliseconds');
 var numberSecond = document.getElementById('seconds');
 var numberMinute = document.getElementById('minutes');
 var buttons = document.getElementsByTagName('button');
+var numberResult = 0;
 
 function startTimer() {
     var clock = document.getElementsByTagName('div');
     var timer = setInterval(function () {
-        if (action.dataset.status === 'stop') {
-            clearInterval(timer);
-        }
-        if (action.dataset.status === 'start') {
-            return;
-        }
         milisecond++;
+        if (action.dataset.status === 'start') {
+            clearInterval(timer);
+            milisecond = 0 
+        }
         numberMilisecond.innerHTML = milisecond;
         numberSecond.innerHTML = second;
         numberMinute.innerHTML = minute;
@@ -37,6 +36,9 @@ function startTimer() {
         if (minute === 59) {
             clearInterval(timer);
         }
+        if (action.dataset.status === 'stop') {
+            clearInterval(timer);
+        }
     }, 10);
 }
 
@@ -52,15 +54,29 @@ function createButtons() {
 function resetTimer() {
     action.setAttribute('data-status', 'start');
     action.innerHTML = 'Start'
-    numberMilisecond.innerHTML = '00';
-    numberSecond.innerHTML = '00';
-    numberMinute.innerHTML = '00';
     milisecond = 0;
     second = 0;
     minute = 0;
     while (buttons.length > 1) {
         buttons[1].remove();
     }
+    var results = document.getElementsByTagName('p');
+    if (results) {
+        while (results.length) {
+            results[0].remove();
+        }
+    }
+    numberResult = 0;
+    numberMilisecond.innerHTML = '00';
+    numberSecond.innerHTML = '00';
+    numberMinute.innerHTML = '00';
+}
+
+function saveResult() {
+    var result = document.createElement('p');
+    body.appendChild(result);
+    numberResult++;
+    result.innerHTML = numberResult + ') ' + numberMinute.innerHTML + ' : ' + numberSecond.innerHTML + ' : ' + numberMilisecond.innerHTML;    
 }
 
 action.addEventListener('click', function (event) {
@@ -71,9 +87,11 @@ action.addEventListener('click', function (event) {
     var reset = buttons[1];
     var save = buttons[2];
     reset.addEventListener('click', function (event) {
+        event.stopImmediatePropagation();
         resetTimer();
     })
     save.addEventListener('click', function (event) {
+        event.stopImmediatePropagation();
         saveResult();
     })
     if (action.dataset.status === 'start' || action.dataset.status === 'stop') {
