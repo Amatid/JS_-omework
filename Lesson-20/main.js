@@ -7,15 +7,10 @@ var numberMilisecond = document.getElementById('miliseconds');
 var numberSecond = document.getElementById('seconds');
 var numberMinute = document.getElementById('minutes');
 var buttons = document.getElementsByTagName('button');
-var numberResult = 0;
 var arrOfResults = [];
-var statusLoad = localStorage.getItem('status');
-var minuteLoad = localStorage.getItem('minute');
-var secondLoad = localStorage.getItem('second');
-var milisecondLoad = localStorage.getItem('milisecond');
-var resultsLoad = JSON.parse(localStorage.getItem('results'));
 
-function formatNumber () {
+
+function formatNumber() {
     var clock = document.getElementsByTagName('div');
     for (var i = 1; i < clock.length; i++) {
         if (clock[i].innerHTML <= 9) {
@@ -79,22 +74,25 @@ function resetTimer() {
             results[0].remove();
         }
     }
-    numberResult = 0;
     numberMilisecond.innerHTML = '00';
     numberSecond.innerHTML = '00';
     numberMinute.innerHTML = '00';
+    arrOfResults = [];
+    localStorage.clear();
 }
 
 function saveResult() {
     var result = document.createElement('p');
     body.appendChild(result);
-    numberResult++;
-    result.innerHTML = numberResult + ') ' + numberMinute.innerHTML + ' : ' + numberSecond.innerHTML + ' : ' + numberMilisecond.innerHTML;
+    
+    result.innerHTML = (arrOfResults.length + 1) + ') ' + numberMinute.innerHTML + ' : ' + numberSecond.innerHTML + ' : ' + numberMilisecond.innerHTML;
     arrOfResults.push(result.innerHTML);
 }
 
 function setNumberAfterLoad() {
-    action.dataset.status = statusLoad;
+    var minuteLoad = localStorage.getItem('minute');
+    var secondLoad = localStorage.getItem('second');
+    var milisecondLoad = localStorage.getItem('milisecond');
     numberMilisecond.innerHTML = milisecondLoad;
     numberSecond.innerHTML = secondLoad;
     numberMinute.innerHTML = minuteLoad;
@@ -103,13 +101,14 @@ function setNumberAfterLoad() {
     milisecond = milisecondLoad;
     formatNumber();
     createButtons();
-    if (resultsLoad.length > 0) {
-        for (var i = 0; i < resultsLoad.length; i++) {
+    
+    arrOfResults = JSON.parse(localStorage.getItem('results'));
+    if (arrOfResults.length > 0) {
+        for (var i = 0; i < arrOfResults.length; i++) {
             var resultAfterLoad = document.createElement('p');
             body.appendChild(resultAfterLoad);
-            resultAfterLoad.innerHTML = resultsLoad[i];
+            resultAfterLoad.innerHTML = arrOfResults[i];
         }
-        localStorage.setItem('results', JSON.stringify(resultsLoad));
     }
 }
 
@@ -150,6 +149,8 @@ window.addEventListener('unload', function (event) {
 })
 
 window.addEventListener('load', function (event) {
+    var statusLoad = localStorage.getItem('status');
+    action.dataset.status = statusLoad;
     switch (statusLoad) {
         case 'start':
             return;
