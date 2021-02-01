@@ -24,7 +24,7 @@ function startTimer() {
         milisecond++;
         if (action.dataset.status === 'start') {
             clearInterval(timer);
-            milisecond = 0
+            milisecond = 0;
         }
         numberMilisecond.innerHTML = milisecond;
         numberSecond.innerHTML = second;
@@ -61,7 +61,7 @@ function createButtons() {
 
 function resetTimer() {
     action.setAttribute('data-status', 'start');
-    action.innerHTML = 'Start'
+    action.innerHTML = 'Start';
     milisecond = 0;
     second = 0;
     minute = 0;
