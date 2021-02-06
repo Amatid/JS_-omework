@@ -51,12 +51,10 @@
 //Задание 7
 {
     function findPerson(arrOfObj) {
-        let findByAge = arrOfObj.filter(object => object.age < 40);
-        let findByName = arrOfObj.find(object => object.name.startsWith('Fedor'));
         return {
-            ['Пользователи младше 40']: findByAge,
-            ['Пользователь с именем Федор']: findByName
-        };
+            ['Пользователи младше 40']: arrOfObj.filter(object => object.age < 40),
+            ['Пользователь с именем Федор']: arrOfObj.find(object => object.name.startsWith('Fedor')),
+        }
     }
     findPerson([
         { name: 'Vasya Pupkin', age: 25 },
@@ -68,11 +66,7 @@
 //Задание 8
 {
     function convertArr(arr) {
-        return arr.map((name, i) => {
-            return {
-                [`Пользователь ${i + 1}`]: name
-            }
-        })
+        return arr.map((name, i) => ({ [`Пользователь ${i + 1}`]: name }));
     }
     convertArr(['Вася', 'Сергей']);
 }
@@ -80,7 +74,7 @@
 //Задание 9
 {
     function unitedObjects(arrOfObj) {
-        return arrOfObj.reduce((object, current) => { return Object.assign(object, current) }, {});
+        return arrOfObj.reduce((object, current) => Object.assign(object, current) , {});
     }
     unitedObjects([
         { name: 'Vasya' },
@@ -114,9 +108,6 @@
     }
 
     class Cat extends Animal {
-        constructor(name) {
-            super(name)
-        }
         feed() {
             super.feed();
             console.log('Кот доволен ^_^');
