@@ -8,6 +8,7 @@ var numberSecond = document.getElementById('seconds');
 var numberMinute = document.getElementById('minutes');
 var buttons = document.getElementsByTagName('button');
 var arrOfResults = [];
+var blockTimer = document.getElementsByClassName('timer')[0];
 
 
 function formatNumber() {
@@ -40,12 +41,19 @@ function startTimer() {
         }
         if (minute === 59) {
             clearInterval(timer);
+            endTimer();
         }
         if (action.dataset.status === 'stop') {
             clearInterval(timer);
         }
     }, 10);
 }
+
+function endTimer() {
+    buttons[0].remove();
+    buttons[1].remove();
+    blockTimer.classList.add('finish');
+} 
 
 function createButtons() {
     if (buttons.length > 1) {
@@ -79,12 +87,24 @@ function resetTimer() {
     numberMinute.innerHTML = '00';
     arrOfResults = [];
     localStorage.clear();
+    if (blockTimer.classList.contains('finish')) {
+        blockTimer.classList.remove('finish');
+        buttons[0].remove();
+        var createAction = document.createElement('button');
+        body.insertBefore(createAction, blockTimer);
+        createAction.innerHTML = 'Start';
+        createAction.setAttribute('data-status', 'start');
+        action = createAction;
+        createAction.addEventListener('click', function(){
+            clickOnAction();
+        })
+    } 
 }
 
 function saveResult() {
     var result = document.createElement('p');
     body.appendChild(result);
-    
+
     result.innerHTML = (arrOfResults.length + 1) + ') ' + numberMinute.innerHTML + ' : ' + numberSecond.innerHTML + ' : ' + numberMilisecond.innerHTML;
     arrOfResults.push(result.innerHTML);
 }
@@ -99,9 +119,10 @@ function setNumberAfterLoad() {
     minute = minuteLoad;
     second = secondLoad;
     milisecond = milisecondLoad;
-    formatNumber();
     createButtons();
-    
+    if (action.dataset.status !== 'finish') {
+        formatNumber();
+    }
     arrOfResults = JSON.parse(localStorage.getItem('results'));
     if (arrOfResults.length > 0) {
         for (var i = 0; i < arrOfResults.length; i++) {
@@ -112,7 +133,7 @@ function setNumberAfterLoad() {
     }
 }
 
-action.addEventListener('click', function (event) {
+function clickOnAction() {
     if (action.dataset.status === 'start') {
         createButtons();
     }
@@ -138,18 +159,29 @@ action.addEventListener('click', function (event) {
         action.innerHTML = 'Run';
         return;
     }
+}
+
+action.addEventListener('click', function (event) {
+    clickOnAction();
 })
 
 window.addEventListener('unload', function (event) {
     localStorage.setItem('status', action.dataset.status);
     localStorage.setItem('minute', minute);
-    localStorage.setItem('second', second);
+    localStorage.setItem('second',  second);
     localStorage.setItem('milisecond', milisecond);
     localStorage.setItem('results', JSON.stringify(arrOfResults));
+    if (blockTimer.classList.contains('finish')) {
+        localStorage.setItem('status', 'finish');
+        localStorage.setItem('minute', numberMinute.innerHTML);
+        localStorage.setItem('second',  numberSecond.innerHTML);
+        localStorage.setItem('milisecond', numberMilisecond.innerHTML);
+    }
 })
 
 window.addEventListener('load', function (event) {
     var statusLoad = localStorage.getItem('status');
+    statusLoad = (statusLoad === null) ? 'start' : statusLoad;
     action.dataset.status = statusLoad;
     switch (statusLoad) {
         case 'start':
@@ -185,5 +217,14 @@ window.addEventListener('load', function (event) {
                 saveResult();
             })
             break;
+        case 'finish':
+            setNumberAfterLoad();
+            endTimer();
+            var buttons = document.getElementsByTagName('button');
+            var reset = buttons[0];
+            reset.addEventListener('click', function (event) {
+                event.stopImmediatePropagation();
+                resetTimer();
+            })
     }
-})
+}) 
